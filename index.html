@@ -1,97 +1,758 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="robots" content="noindex,nofollow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>YONO GAMES Data — Admin Panel</title>
+<meta name="robots" content="noindex, nofollow">
 <style>
-:root{--orange:#ff8a00;--red:#ff3f45;--blue:#2563eb;--blue2:#1d4ed8;--green:#16a34a;--pink:#e6002d;--text:#173b73;--muted:#667085;--bg:#f3f5f8;--card:#fff;--line:#e4e8ef;--shadow:0 7px 20px rgba(23,59,115,.09)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#f7f8fa,#edf1f6);color:#172033;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}.top{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,var(--orange),var(--red));border-bottom:3px solid #ffd21e;color:#fff;padding:11px 13px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 3px 14px rgba(90,35,0,.22)}.brand{font-weight:900;font-size:15px}.admin-name{font-size:10.5px;font-weight:800;display:flex;gap:6px;align-items:center}.wrap{max-width:760px;margin:auto;padding:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px;margin-bottom:11px;box-shadow:var(--shadow)}h1{font-size:19px;margin:0 0 4px;color:#202b3d}h2{font-size:14px;margin:0 0 9px;color:#26364f}h3{font-size:12px;margin:0 0 7px;color:#26364f}p{font-size:11.5px;line-height:1.5;color:var(--muted);margin:4px 0 9px}.field{margin-bottom:8px}.field label{display:block;font-size:10px;font-weight:800;color:#697386;margin:0 0 4px}.field input,.field select{width:100%;height:39px;border:1px solid #d8dee8;border-radius:10px;padding:0 10px;font-size:12px;outline:0;background:#fff;color:#172033}.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.right{margin-left:auto}button{border:0;border-radius:10px;min-height:38px;padding:0 13px;font-weight:800;font-size:11.5px;cursor:pointer}.primary{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;box-shadow:0 3px 9px rgba(37,99,235,.18)}.green{background:linear-gradient(135deg,#19b957,#087f39);color:#fff}.danger{background:#fff;color:#c21c3a;border:1px solid #f1bdc7}.dark{background:#172033;color:#fff}.soft{background:#eef4ff;color:var(--blue)}.gold{background:#fff7d9;color:#a56a00}.mini{min-height:30px;padding:0 9px;font-size:9.5px;border-radius:8px}.status{border-radius:9px;padding:8px 9px;font-size:10.5px;font-weight:700;background:#eef2f7;color:#536070}.ok{background:#dcfce7;color:#15803d}.err{background:#fee2e2;color:#b91c1c}.warn{background:#fff7d9;color:#9a6700}.pill{display:inline-flex;padding:4px 7px;border-radius:99px;background:#eef4ff;color:var(--blue);font-size:8.5px;font-weight:900}.muted{font-size:9.5px;color:#7a8494}.login{min-height:100vh;display:grid;place-items:center;padding:16px;background:linear-gradient(180deg,#fff,#f1f4f8)}.login .card{width:min(100%,390px)}.lock{font-size:30px;margin-bottom:3px}.hidden{display:none!important}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.stat{border:1px solid var(--line);border-radius:12px;padding:9px;background:linear-gradient(180deg,#fff,#fbfcfd)}.stat b{display:block;font-size:20px;color:var(--text)}.stat span{font-size:9.5px;color:#7a8494}.bars{display:grid;gap:5px}.barrow{display:grid;grid-template-columns:42px 1fr 42px;align-items:center;gap:6px;font-size:9.5px}.bar{height:8px;background:#e9eef6;border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--orange),var(--blue));border-radius:9px}.history{max-height:330px;overflow:auto;display:grid;gap:4px}.history-row{display:flex;justify-content:space-between;gap:8px;padding:7px 8px;border-radius:8px;background:#f7fafc;font-size:9.5px}.history-row b{color:var(--text)}.app-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto;gap:7px;align-items:center;border:1px solid var(--line);border-radius:11px;padding:7px;margin-bottom:7px;background:#fff}.app-row img{width:40px;height:40px;border-radius:9px;object-fit:cover;border:1px solid #d8dfeb;background:#f5f7fa}.app-row .name{font-size:10.5px;font-weight:900;color:#243c63;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.app-row .num{font-size:8.5px;color:#8b95a4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.editbox{margin:7px 0 9px;padding:10px;border:1px dashed #cbd5e1;border-radius:12px;background:#f8fbff}.preview{width:100%;height:285px;border:1px solid var(--line);border-radius:12px;background:#fff}.topgame{display:grid;grid-template-columns:1fr 1fr;gap:7px}.control-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.control{padding:10px;border:1px solid var(--line);border-radius:11px;background:#fbfcff}.control b{font-size:10.5px;color:#243c63}.control p{margin:3px 0 0;font-size:9.5px}.login-note{font-size:9.5px;color:#7a8494;margin-top:8px}.hidden-input{position:absolute;left:-9999px}
-@media(max-width:430px){.grid2{grid-template-columns:1fr}.app-row{grid-template-columns:42px minmax(0,1fr) auto}.app-row .danger{grid-column:3}.app-row .edit{grid-column:3}.control-grid{grid-template-columns:1fr}}
+  :root{
+    --bg:#f4f5f7; --card:#ffffff; --text:#111827; --text2:#6b7280; --border:#e5e7eb;
+    --blue:#2563eb; --blue-dark:#1d4ed8; --green:#16a34a; --red:#dc2626;
+    --header:#c0392b; --header-dark:#992d22;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;}
+  img{max-width:100%;display:block;}
+  button{font:inherit;cursor:pointer;}
+  input,select,textarea{font:inherit;}
+  a{color:inherit;}
+
+  /* ---------- lock screen ---------- */
+  #lockScreen{
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:24px;background:linear-gradient(160deg,var(--header),var(--header-dark));
+  }
+  .lock-card{
+    background:#fff;border-radius:16px;padding:28px 22px;width:100%;max-width:340px;
+    box-shadow:0 12px 32px rgba(0,0,0,.25);text-align:center;
+  }
+  .lock-card h1{font-size:17px;margin:0 0 4px 0;}
+  .lock-card p{font-size:12.5px;color:var(--text2);margin:0 0 18px 0;}
+  .lock-card input{
+    width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;
+    font-size:15px;margin-bottom:10px;text-align:center;letter-spacing:2px;
+  }
+  .lock-card button{
+    width:100%;background:var(--header);color:#fff;border:none;border-radius:10px;
+    padding:13px;font-weight:800;font-size:14px;
+  }
+  .lock-card button:active{background:var(--header-dark);}
+  .lock-error{color:var(--red);font-size:12.5px;font-weight:700;min-height:16px;margin-top:8px;}
+  .lock-note{font-size:10.5px;color:var(--text2);margin-top:16px;line-height:1.5;}
+
+  /* ---------- top bar ---------- */
+  #adminApp{display:none;}
+  header.admin-top{
+    background:linear-gradient(120deg,var(--header),var(--header-dark));
+    color:#fff;padding:14px 16px;position:sticky;top:0;z-index:20;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  header.admin-top .title{font-weight:800;font-size:15px;}
+  header.admin-top .sub{font-size:11px;opacity:.85;}
+  header.admin-top button{
+    background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:8px;
+    padding:8px 12px;font-weight:700;font-size:12px;
+  }
+
+  main{max-width:760px;margin:0 auto;padding:14px 14px 60px 14px;}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px;}
+  .card h2{font-size:14.5px;margin:0 0 12px 0;display:flex;align-items:center;gap:8px;}
+  .card h2 .badge{font-size:10.5px;background:var(--bg);color:var(--text2);padding:2px 8px;border-radius:20px;font-weight:700;}
+
+  label.f-label{display:block;font-size:11.5px;font-weight:700;color:var(--text2);margin:10px 0 4px 0;}
+  input.f-input, select.f-input{
+    width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:9px;font-size:13.5px;
+  }
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    border:none;border-radius:9px;padding:10px 14px;font-weight:700;font-size:13px;
+    cursor:pointer;
+  }
+  .btn-blue{background:var(--blue);color:#fff;} .btn-blue:active{background:var(--blue-dark);}
+  .btn-green{background:var(--green);color:#fff;}
+  .btn-gray{background:var(--bg);color:var(--text);border:1px solid var(--border);}
+  .btn-red{background:#fff;color:var(--red);border:1px solid #fecaca;}
+  .btn-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .status-line{font-size:12px;margin-top:8px;font-weight:600;min-height:16px;}
+  .status-line.ok{color:var(--green);} .status-line.err{color:var(--red);} .status-line.info{color:var(--text2);}
+
+  .app-row{
+    display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);
+  }
+  .app-row:last-child{border-bottom:none;}
+  .app-row img{width:42px;height:42px;border-radius:9px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;}
+  .app-row .info{flex:1;min-width:0;}
+  .app-row .name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .app-row .meta{font-size:11px;color:var(--text2);}
+  .app-row .actions{display:flex;gap:6px;flex-shrink:0;}
+  .app-row .actions button{padding:6px 9px;font-size:11px;border-radius:7px;}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .stat-box{background:var(--bg);border-radius:10px;padding:10px;text-align:center;}
+  .stat-box .num{font-size:18px;font-weight:800;}
+  .stat-box .lbl{font-size:10.5px;color:var(--text2);margin-top:2px;}
+
+  .local-tag{display:inline-block;background:#fef3c7;color:#92400e;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;margin-left:6px;}
+
+  .game-click-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:12.5px;}
+  .game-click-row:last-child{border-bottom:none;}
+  .game-click-row .n{font-weight:700;}
+  .game-click-row .c{color:var(--text2);}
+
+  #editModal, #confirmModal{
+    position:fixed;inset:0;background:rgba(17,24,39,.45);display:none;
+    align-items:flex-end;justify-content:center;z-index:50;
+  }
+  #editModal.show, #confirmModal.show{display:flex;}
+  .modal-sheet{
+    background:#fff;border-radius:18px 18px 0 0;padding:18px 16px 26px 16px;
+    width:100%;max-width:520px;max-height:85vh;overflow-y:auto;
+  }
+  .modal-sheet h3{font-size:15px;margin:0 0 12px 0;}
+  .token-mask{font-family:monospace;font-size:12px;color:var(--text2);}
 </style>
 </head>
 <body>
-<div id="login" class="login"><div class="card">
-  <div class="lock">🔐</div><h1>YONO GAMES Data</h1><p><b>Admin Panel</b> · Authorized admin: Baharul</p>
-  <div class="field"><label>Admin name</label><input id="loginName" autocomplete="username" placeholder="Baharul"></div>
-  <div class="field"><label>Password</label><input id="loginPass" type="password" autocomplete="current-password" placeholder="Admin password"></div>
-  <button class="primary" style="width:100%" id="loginBtn">Save &amp; Unlock Admin Panel</button>
-  <div id="loginStatus" class="status" style="margin-top:8px">Admin access required.</div>
-  <div class="login-note">Enter password <b>9127086380</b> and press Save &amp; Unlock. Admin name may be left blank.</div>
-</div></div>
 
-<div id="app" class="hidden">
-<header class="top"><div class="brand">YONO GAMES Data</div><div class="admin-name">Admin · Baharul <button id="logout" class="mini danger">Lock</button></div></header>
-<main class="wrap">
-<section class="card"><div class="row"><div><h1>Admin Panel</h1><p style="margin-bottom:0">Remote control for apps, GitHub sync, preview and activity.</p></div><span class="pill right">STATIC · NO BACKEND</span></div></section>
+<!-- ============ LOCK SCREEN ============ -->
+<div id="lockScreen">
+  <div class="lock-card">
+    <h1>YONO GAMES Data</h1>
+    <p>Admin Panel — enter password to unlock</p>
+    <input id="lockPassword" type="password" placeholder="Password" inputmode="numeric">
+    <button id="unlockBtn">Unlock</button>
+    <div class="lock-error" id="lockError"></div>
+    <div class="lock-note">This is a client-side password gate only — anyone who can view this file's source can see how it works. It is not a substitute for real server-side security.</div>
+  </div>
+</div>
 
-<section class="card"><h2>🔗 Connect to GitHub</h2>
- <div class="grid2"><div class="field"><label>GitHub username / organization</label><input id="ghUser" placeholder="e.g. yourusername"></div><div class="field"><label>Repository name</label><input id="ghRepo" placeholder="e.g. my-games-site"></div></div>
- <div class="grid2"><div class="field"><label>Branch</label><input id="ghBranch" value="main"></div><div class="field"><label>Path to apps.json</label><input id="ghPath" value="apps.json"></div></div>
- <div class="field"><label>Personal Access Token</label><input id="ghToken" type="password" autocomplete="off" placeholder="github_pat_…"></div>
- <div class="row"><button class="primary" id="saveConnBtn">Save Connection</button><button class="soft" id="loadBtn">Load Current Apps</button><button class="soft" id="verifyBtn">Verify index.html</button></div>
- <div class="row" style="margin-top:7px"><button class="green" id="saveAllBtn">Sync Apps to GitHub</button><button class="gold" id="exportBtn">Export apps.json</button></div>
- <div id="ghStatus" class="status" style="margin-top:8px">Not connected.</div>
- <p style="margin-top:8px">The browser talks directly to GitHub. No separate server is used. Keep the token private; it is stored only in this browser session.</p>
-</section>
+<!-- ============ ADMIN APP ============ -->
+<div id="adminApp">
+  <header class="admin-top">
+    <div>
+      <div class="title">YONO GAMES Data</div>
+      <div class="sub" id="adminWhoami">Admin · Baharul</div>
+    </div>
+    <button id="lockBtn">LOCK</button>
+  </header>
 
-<section class="card"><h2>🌐 Live Website Preview</h2><div class="field"><label>Live site URL</label><input id="siteUrl" value="https://yonogamesdata.com/" placeholder="https://yonogamesdata.com/"></div><div class="row"><button class="primary" id="previewBtn">Open Live Preview</button><button class="soft" id="openSiteBtn">Open Website</button></div><iframe id="preview" class="preview" style="display:none;margin-top:9px" loading="lazy" referrerpolicy="no-referrer"></iframe></section>
+  <main>
 
-<section class="card"><h2>📊 Live Activity</h2><div class="stats"><div class="stat"><b id="todayOpens">0</b><span>Website opens today</span></div><div class="stat"><b id="todayClicks">0</b><span>Download clicks today</span></div><div class="stat"><b id="sevenClicks">0</b><span>Download clicks · 7 days</span></div><div class="stat"><b id="ninetyClicks">0</b><span>Download clicks · 3 months</span></div></div><div style="height:11px"></div><div class="row"><b style="font-size:11px">Daily clicks</b><span class="pill right">14 days</span></div><div id="dailyBars" class="bars" style="margin-top:7px"></div><div style="height:11px"></div><div class="row"><b style="font-size:11px">3-month history</b><span class="pill right">90 days</span></div><div id="history90" class="history" style="margin-top:7px"></div><div style="height:11px"></div><div class="row"><b style="font-size:11px">Highest-clicked games</b><span class="pill right">Top 10</span></div><div id="topGames" style="margin-top:7px"></div><div id="analyticsStatus" class="status" style="margin-top:8px">Local analytics not loaded.</div><p style="margin-top:7px"><b>Important:</b> with only static HTML and no shared analytics backend, these counters are per-browser. Cross-user/domain-wide live counts require a shared service.</p></section>
+    <!-- GitHub connection -->
+    <div class="card">
+      <h2>GitHub Connection</h2>
+      <label class="f-label">GitHub Username / Organization</label>
+      <input id="ghUser" class="f-input" type="text" placeholder="e.g. yono-games" autocomplete="off">
+      <label class="f-label">Repository Name</label>
+      <input id="ghRepo" class="f-input" type="text" placeholder="e.g. yono-games-site" autocomplete="off">
+      <label class="f-label">Branch</label>
+      <input id="ghBranch" class="f-input" type="text" placeholder="main" autocomplete="off">
+      <label class="f-label">Personal Access Token (Contents: Read &amp; Write)</label>
+      <input id="ghToken" class="f-input" type="password" placeholder="ghp_..." autocomplete="off">
+      <div id="ghTokenSavedNote" class="status-line info"></div>
+      <div class="btn-row">
+        <button class="btn btn-blue" id="saveConnectionBtn">Save Connection</button>
+        <button class="btn btn-gray" id="loadAppsBtn">Load Current Apps</button>
+        <button class="btn btn-gray" id="verifyBtn">Verify Website</button>
+        <button class="btn btn-green" id="publishBtn">Publish Changes</button>
+      </div>
+      <div class="status-line" id="ghStatus"></div>
+    </div>
 
-<section class="card"><h2>🎛️ Remote Control</h2><div class="control-grid"><div class="control"><b>Refresh live app list</b><p>Reload apps.json from the website.</p><button class="soft mini" id="refreshSiteBtn" style="margin-top:7px">Refresh</button></div><div class="control"><b>Lock admin</b><p>Immediately close this admin session.</p><button class="danger mini" id="lockNowBtn" style="margin-top:7px">Lock Now</button></div><div class="control"><b>Website home</b><p>Open the public home page.</p><button class="soft mini" id="homeSiteBtn" style="margin-top:7px">Open Home</button></div><div class="control"><b>Preview current code</b><p>Check the current GitHub index.html.</p><button class="soft mini" id="verify2Btn" style="margin-top:7px">Verify</button></div></div></section>
+    <!-- Live preview -->
+    <div class="card">
+      <h2>Live Website Preview</h2>
+      <label class="f-label">Website URL</label>
+      <input id="siteUrl" class="f-input" type="text" placeholder="https://yourname.github.io/repo/">
+      <div class="btn-row">
+        <button class="btn btn-blue" id="openSiteBtn">Open Live Website</button>
+      </div>
+    </div>
 
-<section class="card"><h2>➕ Add New App</h2><div class="field"><label>Image URL</label><input id="newImage" placeholder="https://…"></div><div class="field"><label>Image Name / Game Name</label><input id="newImageName" placeholder="e.g. YONO SLOTS"></div><div class="field"><label>App URL</label><input id="newLink" placeholder="https://…"></div><button class="primary" style="width:100%" id="addBtn">Save New App</button><div id="addStatus" class="status" style="margin-top:8px">New app will be added at the end.</div></section>
+    <!-- App list -->
+    <div class="card">
+      <h2>Apps <span class="badge" id="appsLiveCount">Apps Live Now: 0</span></h2>
+      <input id="searchApps" class="f-input" type="text" placeholder="Search by game name or ID...">
+      <label class="f-label">Sort</label>
+      <select id="sortApps" class="f-input">
+        <option value="position">Position</option>
+        <option value="az">A–Z</option>
+        <option value="downloads">Highest Downloads (local)</option>
+        <option value="recent">Recently Added</option>
+      </select>
+      <div id="appListBox" style="margin-top:12px;"></div>
+      <div class="status-line info">Sorting here previews order only — nothing changes on the live site until you drag/renumber positions below and click "Save Order".</div>
+      <div class="btn-row">
+        <button class="btn btn-gray" id="saveOrderBtn">Save Order</button>
+      </div>
+    </div>
 
-<section class="card"><div class="row"><h2 style="margin:0">📱 Apps Live Now: <span id="appCount">0</span></h2><span class="pill right">apps.json</span></div><div style="height:7px"></div><div class="field"><input id="search" placeholder="Search game name…"></div><div id="appsList"></div></section>
-<section class="card"><h2>♻️ Recently Removed</h2><p>Recovery restores the app to its original position. Then sync to GitHub.</p><div id="removedList"></div></section>
-</main></div>
+    <!-- Add new app -->
+    <div class="card">
+      <h2>Add New App</h2>
+      <label class="f-label">Image URL</label>
+      <input id="newImage" class="f-input" type="text" placeholder="https://...">
+      <label class="f-label">Image Name</label>
+      <input id="newImageName" class="f-input" type="text" placeholder="Same as game name, usually">
+      <label class="f-label">Game Name</label>
+      <input id="newName" class="f-input" type="text" placeholder="e.g. NEW RUMMY APP">
+      <label class="f-label">App URL / Download Link</label>
+      <input id="newUrl" class="f-input" type="text" placeholder="https://...">
+      <label class="f-label">Sign Up Bonus</label>
+      <input id="newBonus" class="f-input" type="text" placeholder="₹100">
+      <label class="f-label">Min. Withdrawal</label>
+      <input id="newWithdrawal" class="f-input" type="text" placeholder="₹100" value="₹100">
+      <label class="f-label">Position</label>
+      <input id="newPosition" class="f-input" type="number" min="1" placeholder="Leave blank to add at end">
+      <div class="btn-row">
+        <button class="btn btn-blue" id="saveNewAppBtn">Save App</button>
+      </div>
+      <div class="status-line" id="newAppStatus"></div>
+    </div>
+
+    <!-- Recently removed -->
+    <div class="card">
+      <h2>Recently Removed <span class="badge" id="removedCount">0</span></h2>
+      <div id="removedListBox"><p class="status-line info">No removed apps.</p></div>
+    </div>
+
+    <!-- Analytics -->
+    <div class="card">
+      <h2>Live Activity <span class="local-tag">LOCAL — this browser only</span></h2>
+      <div class="status-line info" style="margin-bottom:10px;">There is no shared server, so these numbers only reflect activity recorded in whichever browser opened the site — not every visitor everywhere. Open this admin panel on the same device/browser you use to browse the live site to see it update.</div>
+      <div class="grid-2">
+        <div class="stat-box"><div class="num" id="statOpensToday">0</div><div class="lbl">Website Opens Today</div></div>
+        <div class="stat-box"><div class="num" id="statClicksToday">0</div><div class="lbl">Download Clicks Today</div></div>
+        <div class="stat-box"><div class="num" id="statClicks7d">0</div><div class="lbl">Download Clicks — 7 Days</div></div>
+        <div class="stat-box"><div class="num" id="statClicks3m">0</div><div class="lbl">Download Clicks — 3 Months</div></div>
+        <div class="stat-box"><div class="num" id="statClicksLife">0</div><div class="lbl">Lifetime Download Clicks</div></div>
+        <div class="stat-box"><div class="num" id="statOpensLife">0</div><div class="lbl">Lifetime Website Opens</div></div>
+      </div>
+      <h3 style="font-size:12.5px;margin:16px 0 6px 0;">Per-Game Downloads (highest first)</h3>
+      <div id="gameClicksBox"><p class="status-line info">No download clicks recorded yet.</p></div>
+      <div class="btn-row">
+        <button class="btn btn-gray" id="clearTodayBtn">Clear Today</button>
+        <button class="btn btn-gray" id="clear7dBtn">Clear 7 Days</button>
+        <button class="btn btn-gray" id="clear3mBtn">Clear 3 Months</button>
+        <button class="btn btn-red" id="clearAllBtn">Clear All History</button>
+      </div>
+    </div>
+
+    <!-- Backup -->
+    <div class="card">
+      <h2>Data Backup</h2>
+      <div class="btn-row">
+        <button class="btn btn-gray" id="exportBtn">Export apps.json</button>
+        <label class="btn btn-gray" style="position:relative;overflow:hidden;">
+          Import apps.json
+          <input id="importFile" type="file" accept="application/json" style="position:absolute;inset:0;opacity:0;cursor:pointer;">
+        </label>
+      </div>
+      <div class="status-line" id="backupStatus"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Edit modal -->
+<div id="editModal">
+  <div class="modal-sheet">
+    <h3>Edit App</h3>
+    <label class="f-label">Image URL</label>
+    <input id="editImage" class="f-input" type="text">
+    <label class="f-label">Image Name</label>
+    <input id="editImageName" class="f-input" type="text">
+    <label class="f-label">Game Name</label>
+    <input id="editName" class="f-input" type="text">
+    <label class="f-label">App URL</label>
+    <input id="editUrl" class="f-input" type="text">
+    <label class="f-label">Sign Up Bonus</label>
+    <input id="editBonus" class="f-input" type="text">
+    <label class="f-label">Min. Withdrawal</label>
+    <input id="editWithdrawal" class="f-input" type="text">
+    <label class="f-label">Position</label>
+    <input id="editPosition" class="f-input" type="number" min="1">
+    <div class="btn-row">
+      <button class="btn btn-blue" id="saveEditBtn">Save Changes</button>
+      <button class="btn btn-gray" id="cancelEditBtn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm modal (remove / clear history) -->
+<div id="confirmModal">
+  <div class="modal-sheet">
+    <h3 id="confirmTitle">Are you sure?</h3>
+    <p id="confirmBody" style="font-size:13px;color:var(--text2);"></p>
+    <div class="btn-row">
+      <button class="btn btn-red" id="confirmYesBtn">Confirm</button>
+      <button class="btn btn-gray" id="confirmCancelBtn">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <script>
-const PASSWORD_HASH='71cf998a5d43ae08e39b52ef6050ef0390f12f7e3a566f2438c287b82b2ee029';
-const ADMIN_NAME='Baharul';
-const state={apps:[],removed:[],gh:{user:'',repo:'',branch:'main',path:'apps.json',token:''},fileSha:null};
-const $=id=>document.getElementById(id);
-const sha256=async s=>{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')};
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function status(el,msg,kind=''){el.textContent=msg;el.className='status '+kind}
-function saveSession(){try{sessionStorage.setItem('yonoAdminSession','1');sessionStorage.setItem('yonoGH',JSON.stringify(state.gh));}catch(e){}}
-function restoreSession(){try{const ok=sessionStorage.getItem('yonoAdminSession')==='1';const gh=JSON.parse(sessionStorage.getItem('yonoGH')||'null');if(gh)state.gh=gh;return ok}catch(e){return false}}
-function showApp(){ $('login').classList.add('hidden');$('app').classList.remove('hidden');if(state.gh.user)$('ghUser').value=state.gh.user;if(state.gh.repo)$('ghRepo').value=state.gh.repo;$('ghBranch').value=state.gh.branch||'main';$('ghPath').value=state.gh.path||'apps.json';loadCurrentLocal();renderAnalytics();}
-$('loginBtn').onclick=async()=>{const n=$('loginName').value.trim(),p=$('loginPass').value.trim();if(!p){status($('loginStatus'),'Enter admin password.','err');return}if(await sha256(p)!==PASSWORD_HASH){status($('loginStatus'),'Incorrect admin password. Use the configured admin password.','err');return}if(n&&n.toLowerCase()!==ADMIN_NAME.toLowerCase()){status($('loginStatus'),'Admin name must be Baharul, or leave it blank.','err');return}if(!n)$('loginName').value=ADMIN_NAME;saveSession();showApp()};
-$('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')$('loginBtn').click()});
-$('logout').onclick=()=>{sessionStorage.clear();location.reload()};$('lockNowBtn').onclick=()=>$('logout').click();
-$('saveConnBtn').onclick=()=>{state.gh={user:$('ghUser').value.trim(),repo:$('ghRepo').value.trim(),branch:$('ghBranch').value.trim()||'main',path:$('ghPath').value.trim()||'apps.json',token:$('ghToken').value.trim()};saveSession();status($('ghStatus'),'GitHub connection saved for this browser session.','ok')};
-async function githubRequest(url,opts={}){const token=$('ghToken').value.trim()||state.gh.token;if(!token)throw Error('GitHub token required.');opts.headers={...(opts.headers||{}),Authorization:'Bearer '+token,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28','Content-Type':'application/json'};const r=await fetch(url,opts);const j=await r.json().catch(()=>({}));if(!r.ok)throw Error(j.message||('GitHub HTTP '+r.status));return j}
-function ghBase(){const u=$('ghUser').value.trim(),r=$('ghRepo').value.trim();if(!u||!r)throw Error('Enter GitHub username and repository name.');return `https://api.github.com/repos/${encodeURIComponent(u)}/${encodeURIComponent(r)}/contents/`}
-async function getFile(path){const branch=encodeURIComponent($('ghBranch').value.trim()||'main');return githubRequest(ghBase()+path.split('/').map(encodeURIComponent).join('/')+'?ref='+branch)}
-function decode64(s){const bin=atob(String(s).replace(/\n/g,''));const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));return new TextDecoder().decode(bytes)}
-function encode64(s){const bytes=new TextEncoder().encode(s);let bin='';for(let i=0;i<bytes.length;i+=0x8000)bin+=String.fromCharCode(...bytes.subarray(i,i+0x8000));return btoa(bin)}
-async function loadGitHubApps(){state.gh={user:$('ghUser').value.trim(),repo:$('ghRepo').value.trim(),branch:$('ghBranch').value.trim()||'main',path:$('ghPath').value.trim()||'apps.json',token:$('ghToken').value.trim()||state.gh.token};saveSession();const f=await getFile(state.gh.path);const data=JSON.parse(decode64(f.content));if(!Array.isArray(data))throw Error('apps.json is not an array.');state.apps=data.map((a,i)=>({id:Number(a.id)||i+1,name:String(a.name||''),image:String(a.image||''),link:String(a.link||'')})).filter(a=>a.name&&a.image&&a.link);state.fileSha=f.sha;renderApps();status($('ghStatus'),`Loaded ${state.apps.length} apps successfully.`,'ok')}
-$('loadBtn').onclick=async()=>{try{await loadGitHubApps()}catch(e){status($('ghStatus'),e.message,'err')}};
-async function verifyIndex(){try{const branch=encodeURIComponent($('ghBranch').value.trim()||'main');const f=await githubRequest(ghBase()+'index.html?ref='+branch);const raw=decode64(f.content||'');const ok=raw.includes('YONO GAMES Data')&&raw.includes('homeGrid')&&raw.includes('detailAllGames')&&raw.includes('apps.json');status($('ghStatus'),ok?'index.html verified — Home, Details and apps.json connection found.':'index.html loaded, but expected site markers were not found.',ok?'ok':'err')}catch(e){status($('ghStatus'),'index.html verify failed: '+e.message,'err')}}
-$('verifyBtn').onclick=verifyIndex;$('verify2Btn').onclick=verifyIndex;
-async function saveApps(message='Update apps.json from YONO GAMES Data Admin'){if(!state.gh.user)state.gh={user:$('ghUser').value.trim(),repo:$('ghRepo').value.trim(),branch:$('ghBranch').value.trim()||'main',path:$('ghPath').value.trim()||'apps.json',token:$('ghToken').value.trim()};const f=await getFile(state.gh.path).catch(()=>null);const body={message,content:encode64(JSON.stringify(state.apps,null,2)+'\n'),branch:state.gh.branch};if(f?.sha)body.sha=f.sha;const saved=await githubRequest(ghBase()+state.gh.path.split('/').map(encodeURIComponent).join('/'),{method:'PUT',body:JSON.stringify(body)});state.fileSha=saved.content?.sha||state.fileSha;status($('ghStatus'),`Saved ${state.apps.length} apps to GitHub.`,'ok');renderApps()}
-$('saveAllBtn').onclick=async()=>{try{await saveApps()}catch(e){status($('ghStatus'),e.message,'err')}};
-$('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(state.apps,null,2)+'\n'],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='apps.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
-function loadCurrentLocal(){fetch('./apps.json?v='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(a=>{if(Array.isArray(a)){state.apps=a;renderApps();status($('ghStatus'),`Loaded ${a.length} apps from current website apps.json.`,'ok')}}).catch(()=>{})}
-$('refreshSiteBtn').onclick=loadCurrentLocal;$('homeSiteBtn').onclick=()=>window.open($('siteUrl').value.trim()||'https://yonogamesdata.com/','_blank');$('openSiteBtn').onclick=$('homeSiteBtn').onclick;
-$('previewBtn').onclick=()=>{let u=$('siteUrl').value.trim();if(!u)return;if(!/^https?:\/\//i.test(u))u='https://'+u;$('preview').src=u;$('preview').style.display='block'};
-$('addBtn').onclick=async()=>{const image=$('newImage').value.trim(),name=$('newImageName').value.trim(),link=$('newLink').value.trim();if(!image||!name||!link){status($('addStatus'),'Image URL, Image Name and App URL are required.','err');return}const id=state.apps.reduce((m,a)=>Math.max(m,Number(a.id)||0),0)+1;state.apps.push({id,name,image,link});renderApps();$('newImage').value='';$('newImageName').value='';$('newLink').value='';status($('addStatus'),`Added ${name} as #${id}. Sync to GitHub to publish it.`,'ok');if($('ghToken').value.trim()||state.gh.token)try{await saveApps(`Add app: ${name}`)}catch(e){status($('addStatus'),`Added locally; GitHub sync failed: ${e.message}`,'err')}};
-$('search').oninput=renderApps;
-function renderApps(){const q=$('search').value.trim().toLowerCase();$('appCount').textContent=state.apps.length;const list=state.apps.filter(a=>String(a.name).toLowerCase().includes(q));$('appsList').innerHTML=list.map((a,i)=>`<div class="app-row" data-id="${a.id}"><img src="${esc(a.image)}" alt=""><div><div class="name">${esc(a.name)}</div><div class="num">#${i+1} · ${esc(a.link)}</div></div><button class="mini soft edit" data-edit="${a.id}">Edit</button><button class="mini danger" data-remove="${a.id}">Remove</button><div class="editbox hidden" id="edit-${a.id}" style="grid-column:1/-1"><div class="grid2"><div class="field"><label>Game name</label><input data-e-name value="${esc(a.name)}"></div><div class="field"><label>Image URL</label><input data-e-image value="${esc(a.image)}"></div></div><div class="field"><label>App URL</label><input data-e-link value="${esc(a.link)}"></div><div class="row"><button class="green mini" data-save-edit="${a.id}">Save Edit</button><button class="soft mini" data-cancel-edit="${a.id}">Cancel</button></div></div></div>`).join('')||'<div class="status">No apps found.</div>';
-document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>document.getElementById('edit-'+b.dataset.edit)?.classList.toggle('hidden'));
-document.querySelectorAll('[data-cancel-edit]').forEach(b=>b.onclick=()=>document.getElementById('edit-'+b.dataset.cancelEdit)?.classList.add('hidden'));
-document.querySelectorAll('[data-save-edit]').forEach(b=>b.onclick=()=>saveEdit(Number(b.dataset.saveEdit)));
-document.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>removeApp(Number(b.dataset.remove)));renderRemoved()}
-async function saveEdit(id){const a=state.apps.find(x=>Number(x.id)===id),box=document.getElementById('edit-'+id);if(!a||!box)return;a.name=box.querySelector('[data-e-name]').value.trim()||a.name;a.image=box.querySelector('[data-e-image]').value.trim()||a.image;a.link=box.querySelector('[data-e-link]').value.trim()||a.link;renderApps();if($('ghToken').value.trim()||state.gh.token)try{await saveApps(`Edit app: ${a.name}`)}catch(e){status($('ghStatus'),e.message,'err')}}
-function removeApp(id){const idx=state.apps.findIndex(x=>Number(x.id)===id);if(idx<0)return;const a=state.apps[idx];if(!confirm(`Remove ${a.name} from the website?`))return;state.apps.splice(idx,1);state.removed.unshift({...a,_oldPosition:idx,_removedAt:new Date().toISOString()});renderApps();if($('ghToken').value.trim()||state.gh.token)saveApps(`Remove app: ${a.name}`).catch(e=>status($('ghStatus'),e.message,'err'))}
-function renderRemoved(){$('removedList').innerHTML=state.removed.map((a,i)=>`<div class="app-row"><img src="${esc(a.image)}" alt=""><div><div class="name">${esc(a.name)}</div><div class="num">Old position #${(a._oldPosition??i)+1}</div></div><button class="mini green" data-recover="${i}">Recovery</button></div>`).join('')||'<div class="status">No recently removed apps.</div>';document.querySelectorAll('[data-recover]').forEach(b=>b.onclick=()=>recoverApp(Number(b.dataset.recover)))}
-function recoverApp(i){const a=state.removed[i];if(!a)return;const pos=Math.max(0,Math.min(Number(a._oldPosition)||0,state.apps.length));state.apps.splice(pos,0,{id:a.id,name:a.name,image:a.image,link:a.link});state.removed.splice(i,1);renderApps();if($('ghToken').value.trim()||state.gh.token)saveApps(`Recover app: ${a.name}`).catch(e=>status($('ghStatus'),e.message,'err'))}
-function localAnalytics(){try{return JSON.parse(localStorage.getItem('yonoAnalyticsV3')||'{"pageviews":{},"clicks":{}}')}catch(e){return {pageviews:{},clicks:{}}}}
-function renderAnalytics(){const d=localAnalytics(),clicks=d.clicks||{},pv=d.pageviews||{},today=new Date().toISOString().slice(0,10);let t=0,s=0,n=0;const totals={};const days=[];for(let i=0;i<90;i++){const dt=new Date(Date.now()-i*86400000).toISOString().slice(0,10),row=clicks[dt]||{};let sum=0;Object.entries(row).forEach(([id,v])=>{sum+=Number(v)||0;totals[id]=(totals[id]||0)+(Number(v)||0)});if(dt===today)t=sum;if(i<7)s+=sum;n+=sum;if(i<14)days.unshift({dt,sum})}$('todayOpens').textContent=Number(pv[today]||0);$('todayClicks').textContent=t;$('sevenClicks').textContent=s;$('ninetyClicks').textContent=n;const max=Math.max(1,...days.map(x=>x.sum));$('dailyBars').innerHTML=days.map(x=>`<div class="barrow"><span>${x.dt.slice(5)}</span><div class="bar"><i style="width:${Math.round(x.sum/max*100)}%"></i></div><b>${x.sum}</b></div>`).join('');$('history90').innerHTML=Array.from({length:90},(_,i)=>{const dt=new Date(Date.now()-i*86400000).toISOString().slice(0,10),sum=Object.values(clicks[dt]||{}).reduce((a,v)=>a+(Number(v)||0),0);return `<div class="history-row"><span>${dt}</span><b>${sum.toLocaleString()} clicks</b></div>`}).join('');const top=Object.entries(totals).sort((a,b)=>b[1]-a[1]).slice(0,10);$('topGames').innerHTML=top.map(([id,c])=>{const a=state.apps.find(x=>String(x.id)===String(id));return `<div class="app-row" style="grid-template-columns:36px minmax(0,1fr) auto"><img src="${esc(a?.image||'')}" alt=""><div class="name">${esc(a?.name||('App #'+id))}</div><b style="font-size:10px">${c}</b></div>`}).join('')||'<div class="status">No download clicks recorded in this browser yet.</div>';status($('analyticsStatus'),'Local browser analytics active.','')}
-setInterval(renderAnalytics,10000);renderAnalytics();
-if(restoreSession())showApp();
+(function(){
+
+/* ================= LOGIN ================= */
+const ADMIN_NAME = 'Baharul';
+const ADMIN_PASSWORD = '9127086380';
+
+document.getElementById('unlockBtn').addEventListener('click', tryUnlock);
+document.getElementById('lockPassword').addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
+function tryUnlock(){
+  const val = document.getElementById('lockPassword').value;
+  if (val === ADMIN_PASSWORD) {
+    document.getElementById('lockScreen').style.display = 'none';
+    document.getElementById('adminApp').style.display = 'block';
+    document.getElementById('lockPassword').value = '';
+    document.getElementById('lockError').textContent = '';
+    init();
+  } else {
+    document.getElementById('lockError').textContent = 'Incorrect password.';
+  }
+}
+document.getElementById('lockBtn').addEventListener('click', () => {
+  document.getElementById('adminApp').style.display = 'none';
+  document.getElementById('lockScreen').style.display = 'flex';
+});
+
+/* ================= STATE ================= */
+let appsData = [];        // live/loaded app list (schema matches apps.json)
+let removedApps = [];     // recently-removed apps (soft delete)
+let ghSha = null;         // last-known SHA of apps.json on GitHub, for safe PUTs
+let editingId = null;
+let pendingConfirmAction = null;
+
+function setStatus(elId, msg, kind){
+  const el = document.getElementById(elId);
+  el.textContent = msg;
+  el.className = 'status-line' + (kind ? ' ' + kind : '');
+}
+
+/* ================= LOCAL STORAGE HELPERS ================= */
+function loadLocal(key, fallback){
+  try { return JSON.parse(localStorage.getItem(key) || 'null') || fallback; }
+  catch(e){ return fallback; }
+}
+function saveLocal(key, val){
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch(e){}
+}
+
+/* ================= GITHUB CONNECTION ================= */
+function loadConnection(){
+  const c = loadLocal('adminGhConnection', null);
+  if (c) {
+    document.getElementById('ghUser').value = c.user || '';
+    document.getElementById('ghRepo').value = c.repo || '';
+    document.getElementById('ghBranch').value = c.branch || 'main';
+    document.getElementById('ghToken').value = c.token || '';
+    if (c.token) document.getElementById('ghTokenSavedNote').textContent = 'Token saved securely in this browser only.';
+  } else {
+    document.getElementById('ghBranch').value = 'main';
+  }
+  const site = loadLocal('adminSiteUrl', null);
+  if (site) document.getElementById('siteUrl').value = site;
+}
+function currentConnection(){
+  return {
+    user: document.getElementById('ghUser').value.trim(),
+    repo: document.getElementById('ghRepo').value.trim(),
+    branch: document.getElementById('ghBranch').value.trim() || 'main',
+    token: document.getElementById('ghToken').value.trim()
+  };
+}
+document.getElementById('saveConnectionBtn').addEventListener('click', () => {
+  const c = currentConnection();
+  if (!c.user || !c.repo || !c.token) { setStatus('ghStatus', 'Fill in username, repository and token first.', 'err'); return; }
+  saveLocal('adminGhConnection', c);
+  saveLocal('adminSiteUrl', document.getElementById('siteUrl').value.trim());
+  document.getElementById('ghTokenSavedNote').textContent = 'Token saved securely in this browser only.';
+  setStatus('ghStatus', 'Connection saved in this browser.', 'ok');
+});
+
+function b64EncodeUnicode(str){ return btoa(unescape(encodeURIComponent(str))); }
+function b64DecodeUnicode(str){ return decodeURIComponent(escape(atob(str))); }
+
+async function ghGetFile(path){
+  const c = currentConnection();
+  const url = `https://api.github.com/repos/${c.user}/${c.repo}/contents/${path}?ref=${encodeURIComponent(c.branch)}`;
+  const res = await fetch(url, {
+    headers: { 'Authorization': `token ${c.token}`, 'Accept': 'application/vnd.github+json' }
+  });
+  if (res.status === 404) return null; // file does not exist yet
+  if (!res.ok) {
+    const body = await res.text().catch(()=> '');
+    throw new Error(githubErrorMessage(res.status, body));
+  }
+  const data = await res.json();
+  return { sha: data.sha, text: b64DecodeUnicode(data.content.replace(/\n/g,'')) };
+}
+async function ghPutFile(path, newText, sha, message){
+  const c = currentConnection();
+  const url = `https://api.github.com/repos/${c.user}/${c.repo}/contents/${path}`;
+  const body = { message: message || 'Update via YONO GAMES Data admin panel', content: b64EncodeUnicode(newText), branch: c.branch };
+  if (sha) body.sha = sha;
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: { 'Authorization': `token ${c.token}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const errBody = await res.text().catch(()=> '');
+    throw new Error(githubErrorMessage(res.status, errBody));
+  }
+  return res.json();
+}
+function githubErrorMessage(status, body){
+  if (status === 401) return 'Invalid token — check the Personal Access Token and try again.';
+  if (status === 403) return 'Permission denied or rate limit reached for this token.';
+  if (status === 404) return 'Repository, branch or file not found — check the details above.';
+  if (status === 409) return 'The file changed on GitHub since it was last loaded here — click "Load Current Apps" again, then retry.';
+  if (status === 422) return 'GitHub rejected the request (invalid content or branch).';
+  return `GitHub request failed (HTTP ${status}). ${body ? body.slice(0,160) : ''}`;
+}
+
+document.getElementById('loadAppsBtn').addEventListener('click', async () => {
+  const c = currentConnection();
+  if (!c.user || !c.repo || !c.token) { setStatus('ghStatus', 'Fill in the connection fields first.', 'err'); return; }
+  setStatus('ghStatus', 'Loading apps.json…', 'info');
+  try {
+    const file = await ghGetFile('apps.json');
+    if (!file) { setStatus('ghStatus', 'apps.json was not found in this repository yet — Publish will create it.', 'info'); ghSha = null; appsData = []; renderAppList(); return; }
+    const parsed = JSON.parse(file.text);
+    if (!Array.isArray(parsed)) throw new Error('apps.json did not contain a list.');
+    ghSha = file.sha;
+    appsData = parsed;
+    setStatus('ghStatus', `Loaded ${appsData.length} existing apps from ${c.user}/${c.repo}.`, 'ok');
+    renderAppList();
+  } catch (err) {
+    setStatus('ghStatus', err.message, 'err');
+  }
+});
+
+document.getElementById('verifyBtn').addEventListener('click', async () => {
+  const c = currentConnection();
+  if (!c.user || !c.repo || !c.token) { setStatus('ghStatus', 'Fill in the connection fields first.', 'err'); return; }
+  setStatus('ghStatus', 'Verifying…', 'info');
+  try {
+    const [indexFile, appsFile] = await Promise.all([ghGetFile('index.html'), ghGetFile('apps.json')]);
+    const parts = [];
+    parts.push(indexFile ? 'index.html found' : 'index.html NOT found');
+    parts.push(appsFile ? 'apps.json found' : 'apps.json NOT found');
+    const ok = !!indexFile && !!appsFile;
+    setStatus('ghStatus', parts.join(' · '), ok ? 'ok' : 'err');
+  } catch (err) {
+    setStatus('ghStatus', err.message, 'err');
+  }
+});
+
+document.getElementById('publishBtn').addEventListener('click', async () => {
+  const c = currentConnection();
+  if (!c.user || !c.repo || !c.token) { setStatus('ghStatus', 'Fill in the connection fields first.', 'err'); return; }
+  if (appsData.length === 0) { setStatus('ghStatus', 'Nothing to publish — load or add apps first.', 'err'); return; }
+  setStatus('ghStatus', 'Publishing apps.json…', 'info');
+  try {
+    // Re-fetch fresh SHA right before writing, to avoid clobbering a change
+    // made elsewhere since this session last loaded the file.
+    const fresh = await ghGetFile('apps.json');
+    const newText = JSON.stringify(appsData, null, 2);
+    await ghPutFile('apps.json', newText, fresh ? fresh.sha : null, 'Update apps.json via admin panel');
+    setStatus('ghStatus', `✓ apps.json published (${appsData.length} apps). The live site will pick this up on next load.`, 'ok');
+    const reload = await ghGetFile('apps.json');
+    ghSha = reload ? reload.sha : null;
+  } catch (err) {
+    setStatus('ghStatus', err.message + ' — apps.json was NOT changed.', 'err');
+  }
+});
+
+document.getElementById('openSiteBtn').addEventListener('click', () => {
+  const url = document.getElementById('siteUrl').value.trim();
+  if (!url) { alert('Enter the website URL first.'); return; }
+  saveLocal('adminSiteUrl', url);
+  window.open(url, '_blank');
+});
+
+/* ================= APP LIST RENDERING ================= */
+function visibleApps(){
+  return appsData.filter(a => a.active !== false);
+}
+function renderAppList(){
+  document.getElementById('appsLiveCount').textContent = `Apps Live Now: ${visibleApps().length}`;
+  const search = document.getElementById('searchApps').value.trim().toLowerCase();
+  const sortMode = document.getElementById('sortApps').value;
+  const analytics = loadLocal('yonoAnalytics', { gameClicks:{} });
+
+  let list = appsData.filter(a => a.active !== false);
+  if (search) {
+    list = list.filter(a => a.name.toLowerCase().includes(search) || a.id.toLowerCase().includes(search));
+  }
+  if (sortMode === 'az') list = list.slice().sort((a,b) => a.name.localeCompare(b.name));
+  else if (sortMode === 'downloads') list = list.slice().sort((a,b) => ((analytics.gameClicks[b.name]||{}).total||0) - ((analytics.gameClicks[a.name]||{}).total||0));
+  else if (sortMode === 'recent') list = list.slice().reverse();
+  else list = list.slice().sort((a,b) => (a.position||0) - (b.position||0));
+
+  const box = document.getElementById('appListBox');
+  if (list.length === 0) { box.innerHTML = '<p class="status-line info">No apps to show. Click "Load Current Apps" above, or add a new one below.</p>'; return; }
+  box.innerHTML = list.map(a => `
+    <div class="app-row" data-id="${a.id}">
+      <img src="${a.image}" alt="${a.name}" loading="lazy">
+      <div class="info">
+        <div class="name">#${a.position} — ${a.name}</div>
+        <div class="meta">${a.bonus || ''} · Min. ${a.withdrawal || '₹100'} · ${a.id}</div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-gray" data-edit="${a.id}">Edit</button>
+        <button class="btn btn-red" data-remove="${a.id}">Remove</button>
+      </div>
+    </div>
+  `).join('');
+  box.querySelectorAll('[data-edit]').forEach(btn => btn.addEventListener('click', () => openEdit(btn.dataset.edit)));
+  box.querySelectorAll('[data-remove]').forEach(btn => btn.addEventListener('click', () => confirmRemove(btn.dataset.remove)));
+}
+document.getElementById('searchApps').addEventListener('input', renderAppList);
+document.getElementById('sortApps').addEventListener('change', renderAppList);
+
+document.getElementById('saveOrderBtn').addEventListener('click', () => {
+  // Positions are edited per-app via Edit; this re-numbers 1..N based on
+  // whatever position values currently exist, closing any gaps/duplicates.
+  const active = appsData.filter(a => a.active !== false).sort((a,b) => (a.position||0)-(b.position||0));
+  active.forEach((a, i) => { a.position = i + 1; });
+  renderAppList();
+  setStatus('ghStatus', 'Order re-numbered locally. Click "Publish Changes" to save it to GitHub.', 'info');
+});
+
+/* ================= ADD APP ================= */
+document.getElementById('saveNewAppBtn').addEventListener('click', () => {
+  const name = document.getElementById('newName').value.trim();
+  const image = document.getElementById('newImage').value.trim();
+  const url = document.getElementById('newUrl').value.trim();
+  if (!name || !image || !url) { setStatus('newAppStatus', 'Image URL, Game Name and App URL are required.', 'err'); return; }
+  const activeCount = visibleApps().length;
+  let pos = parseInt(document.getElementById('newPosition').value, 10);
+  if (!pos || pos < 1) pos = activeCount + 1;
+  pos = Math.min(pos, activeCount + 1);
+
+  // Shift existing positions at/after the insertion point.
+  appsData.forEach(a => { if (a.active !== false && a.position >= pos) a.position += 1; });
+
+  const newId = 'app-' + String(Date.now()).slice(-9);
+  appsData.push({
+    id: newId,
+    name,
+    image,
+    imageName: document.getElementById('newImageName').value.trim() || name,
+    appUrl: url,
+    bonus: document.getElementById('newBonus').value.trim() || '₹0',
+    withdrawal: document.getElementById('newWithdrawal').value.trim() || '₹100',
+    position: pos,
+    active: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  });
+
+  ['newImage','newImageName','newName','newUrl','newBonus','newPosition'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('newWithdrawal').value = '₹100';
+  setStatus('newAppStatus', `"${name}" added at position #${pos}. Click "Publish Changes" above to save it to GitHub.`, 'ok');
+  renderAppList();
+});
+
+/* ================= EDIT APP ================= */
+function openEdit(id){
+  const app = appsData.find(a => a.id === id);
+  if (!app) return;
+  editingId = id;
+  document.getElementById('editImage').value = app.image || '';
+  document.getElementById('editImageName').value = app.imageName || '';
+  document.getElementById('editName').value = app.name || '';
+  document.getElementById('editUrl').value = app.appUrl || '';
+  document.getElementById('editBonus').value = app.bonus || '';
+  document.getElementById('editWithdrawal').value = app.withdrawal || '₹100';
+  document.getElementById('editPosition').value = app.position || '';
+  document.getElementById('editModal').classList.add('show');
+}
+document.getElementById('cancelEditBtn').addEventListener('click', () => document.getElementById('editModal').classList.remove('show'));
+document.getElementById('saveEditBtn').addEventListener('click', () => {
+  const app = appsData.find(a => a.id === editingId);
+  if (!app) return;
+  app.image = document.getElementById('editImage').value.trim();
+  app.imageName = document.getElementById('editImageName').value.trim();
+  app.name = document.getElementById('editName').value.trim();
+  app.appUrl = document.getElementById('editUrl').value.trim();
+  app.bonus = document.getElementById('editBonus').value.trim();
+  app.withdrawal = document.getElementById('editWithdrawal').value.trim();
+  const newPos = parseInt(document.getElementById('editPosition').value, 10);
+  if (newPos && newPos !== app.position) {
+    const active = appsData.filter(a => a.active !== false && a.id !== app.id).sort((a,b)=>(a.position||0)-(b.position||0));
+    active.splice(Math.min(newPos - 1, active.length), 0, app);
+    active.forEach((a, i) => { a.position = i + 1; });
+  }
+  app.updatedAt = new Date().toISOString();
+  document.getElementById('editModal').classList.remove('show');
+  renderAppList();
+  setStatus('ghStatus', `"${app.name}" updated locally. Click "Publish Changes" to save it to GitHub.`, 'info');
+});
+
+/* ================= REMOVE / RECOVER ================= */
+function confirmRemove(id){
+  const app = appsData.find(a => a.id === id);
+  if (!app) return;
+  showConfirm(`Remove "${app.name}"?`, 'It will move to Recently Removed and disappear from the live site until recovered.', () => {
+    app.active = false;
+    app.removedAt = new Date().toISOString();
+    removedApps.push(app);
+    renderAppList();
+    renderRemovedList();
+    setStatus('ghStatus', `"${app.name}" removed locally. Click "Publish Changes" to update the live site.`, 'info');
+  });
+}
+function renderRemovedList(){
+  const removed = appsData.filter(a => a.active === false);
+  document.getElementById('removedCount').textContent = removed.length;
+  const box = document.getElementById('removedListBox');
+  if (removed.length === 0) { box.innerHTML = '<p class="status-line info">No removed apps.</p>'; return; }
+  box.innerHTML = removed.map(a => `
+    <div class="app-row" data-id="${a.id}">
+      <img src="${a.image}" alt="${a.name}" loading="lazy">
+      <div class="info">
+        <div class="name">${a.name}</div>
+        <div class="meta">Was #${a.position} · removed ${a.removedAt ? new Date(a.removedAt).toLocaleString() : ''}</div>
+      </div>
+      <div class="actions"><button class="btn btn-green" data-recover="${a.id}">Recover</button></div>
+    </div>
+  `).join('');
+  box.querySelectorAll('[data-recover]').forEach(btn => btn.addEventListener('click', () => recoverApp(btn.dataset.recover)));
+}
+function recoverApp(id){
+  const app = appsData.find(a => a.id === id);
+  if (!app) return;
+  app.active = true;
+  delete app.removedAt;
+  renderAppList();
+  renderRemovedList();
+  setStatus('ghStatus', `"${app.name}" recovered locally. Click "Publish Changes" to update the live site.`, 'info');
+}
+
+/* ================= CONFIRM MODAL ================= */
+function showConfirm(title, body, onYes){
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmBody').textContent = body;
+  pendingConfirmAction = onYes;
+  document.getElementById('confirmModal').classList.add('show');
+}
+document.getElementById('confirmYesBtn').addEventListener('click', () => {
+  document.getElementById('confirmModal').classList.remove('show');
+  if (pendingConfirmAction) pendingConfirmAction();
+  pendingConfirmAction = null;
+});
+document.getElementById('confirmCancelBtn').addEventListener('click', () => {
+  document.getElementById('confirmModal').classList.remove('show');
+  pendingConfirmAction = null;
+});
+
+/* ================= ANALYTICS (local only) ================= */
+function todayKey(){
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function daysAgoKey(n){
+  const d = new Date(); d.setDate(d.getDate() - n);
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function sumRange(dict, days){
+  let total = 0;
+  for (let i = 0; i < days; i++) total += (dict[daysAgoKey(i)] || 0);
+  return total;
+}
+function renderAnalytics(){
+  const a = loadLocal('yonoAnalytics', { daily:{}, gameClicks:{}, opens:{}, lifetime:{downloads:0, opens:0} });
+  document.getElementById('statOpensToday').textContent = a.opens[todayKey()] || 0;
+  document.getElementById('statClicksToday').textContent = a.daily[todayKey()] || 0;
+  document.getElementById('statClicks7d').textContent = sumRange(a.daily, 7);
+  document.getElementById('statClicks3m').textContent = sumRange(a.daily, 90);
+  document.getElementById('statClicksLife').textContent = a.lifetime.downloads || 0;
+  document.getElementById('statOpensLife').textContent = a.lifetime.opens || 0;
+
+  const rows = Object.values(a.gameClicks || {}).sort((x,y) => (y.total||0) - (x.total||0));
+  const box = document.getElementById('gameClicksBox');
+  if (rows.length === 0) { box.innerHTML = '<p class="status-line info">No download clicks recorded yet.</p>'; return; }
+  box.innerHTML = rows.slice(0, 25).map(r => `
+    <div class="game-click-row"><span class="n">${r.name}</span><span class="c">${r.total} total</span></div>
+  `).join('');
+}
+document.getElementById('clearTodayBtn').addEventListener('click', () => {
+  showConfirm("Clear today's analytics?", 'This only clears analytics history — apps and settings are not affected.', () => {
+    const a = loadLocal('yonoAnalytics', {daily:{},gameClicks:{},opens:{},lifetime:{downloads:0,opens:0}});
+    delete a.daily[todayKey()]; delete a.opens[todayKey()];
+    saveLocal('yonoAnalytics', a); renderAnalytics();
+  });
+});
+document.getElementById('clear7dBtn').addEventListener('click', () => {
+  showConfirm('Clear the last 7 days of analytics?', 'This only clears analytics history — apps and settings are not affected.', () => {
+    const a = loadLocal('yonoAnalytics', {daily:{},gameClicks:{},opens:{},lifetime:{downloads:0,opens:0}});
+    for (let i=0;i<7;i++){ delete a.daily[daysAgoKey(i)]; delete a.opens[daysAgoKey(i)]; }
+    saveLocal('yonoAnalytics', a); renderAnalytics();
+  });
+});
+document.getElementById('clear3mBtn').addEventListener('click', () => {
+  showConfirm('Clear the last 3 months of analytics?', 'This only clears analytics history — apps and settings are not affected.', () => {
+    const a = loadLocal('yonoAnalytics', {daily:{},gameClicks:{},opens:{},lifetime:{downloads:0,opens:0}});
+    for (let i=0;i<90;i++){ delete a.daily[daysAgoKey(i)]; delete a.opens[daysAgoKey(i)]; }
+    saveLocal('yonoAnalytics', a); renderAnalytics();
+  });
+});
+document.getElementById('clearAllBtn').addEventListener('click', () => {
+  showConfirm('Clear ALL analytics history?', 'This will also reset the Lifetime totals shown above to zero. Apps and GitHub connection settings are not affected.', () => {
+    saveLocal('yonoAnalytics', {daily:{},gameClicks:{},opens:{},lifetime:{downloads:0,opens:0}});
+    renderAnalytics();
+  });
+});
+
+/* ================= BACKUP ================= */
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(appsData, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'apps.json'; a.click();
+  URL.revokeObjectURL(url);
+});
+document.getElementById('importFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const parsed = JSON.parse(reader.result);
+      if (!Array.isArray(parsed)) throw new Error('File does not contain a list of apps.');
+      const bad = parsed.find(a => !a.id || !a.name || !a.image || !a.appUrl);
+      if (bad) throw new Error('One or more entries is missing id, name, image, or appUrl.');
+      // Backup current data before overwriting, in case the import is wrong.
+      saveLocal('adminAppsBackup_' + Date.now(), appsData);
+      appsData = parsed;
+      renderAppList();
+      renderRemovedList();
+      setStatus('backupStatus', `Imported ${parsed.length} apps. A backup of the previous list was saved in this browser. Click "Publish Changes" to save this to GitHub.`, 'ok');
+    } catch (err) {
+      setStatus('backupStatus', 'Import failed: ' + err.message, 'err');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+/* ================= INIT ================= */
+function init(){
+  loadConnection();
+  renderAppList();
+  renderRemovedList();
+  renderAnalytics();
+  setInterval(renderAnalytics, 5000); // keep numbers fresh without a full reload
+}
+
+})();
 </script>
-</body></html>
+</body>
+</html>
