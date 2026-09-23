@@ -101,6 +101,12 @@
   .game-click-row:last-child{border-bottom:none;}
   .game-click-row .n{font-weight:700;}
   .game-click-row .c{color:var(--text2);}
+  .top-game-row{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr;gap:6px;padding:7px 0;border-bottom:1px solid var(--border);font-size:11.5px;align-items:center;}
+  .top-game-row:first-child{font-weight:700;color:var(--text2);font-size:10.5px;text-transform:uppercase;letter-spacing:.02em;}
+  .top-game-row:last-child{border-bottom:none;}
+  .top-game-row span{text-align:right;}
+  .top-game-row span:first-child{text-align:left;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .top-game-row:first-child span:first-child{color:var(--text2);font-weight:700;}
 
   #editModal, #confirmModal{
     position:fixed;inset:0;background:rgba(17,24,39,.45);display:none;
@@ -160,6 +166,19 @@
         <button class="btn btn-green" id="publishBtn">Publish Changes</button>
       </div>
       <div class="status-line" id="ghStatus"></div>
+    </div>
+
+    <!-- Telegram URL -->
+    <div class="card">
+      <h2>Telegram Settings</h2>
+      <label class="f-label">Telegram URL</label>
+      <input id="telegramUrlInput" class="f-input" type="text" placeholder="https://t.me/yourchannel">
+      <div class="btn-row">
+        <button class="btn btn-gray" id="loadTelegramBtn">Load Current</button>
+        <button class="btn btn-green" id="saveTelegramBtn">Save &amp; Publish</button>
+      </div>
+      <div class="status-line" id="telegramStatus"></div>
+      <div class="status-line info">This updates telegram.json — the website's existing Telegram button design is unchanged; only the destination link is updated.</div>
     </div>
 
     <!-- Live preview -->
@@ -231,8 +250,21 @@
         <div class="stat-box"><div class="num" id="statClicksLife">0</div><div class="lbl">Lifetime Download Clicks</div></div>
         <div class="stat-box"><div class="num" id="statOpensLife">0</div><div class="lbl">Lifetime Website Opens</div></div>
       </div>
-      <h3 style="font-size:12.5px;margin:16px 0 6px 0;">Per-Game Downloads (highest first)</h3>
+      <h3 style="font-size:12.5px;margin:16px 0 6px 0;">Top Games — Today / 7 Days / 3 Months / Lifetime</h3>
       <div id="gameClicksBox"><p class="status-line info">No download clicks recorded yet.</p></div>
+
+      <h3 style="font-size:12.5px;margin:16px 0 6px 0;">Daily Clicks (last 14 days)</h3>
+      <div id="dailyHistoryBox"><p class="status-line info">No history yet.</p></div>
+
+      <h3 style="font-size:12.5px;margin:16px 0 6px 0;">7-Day History</h3>
+      <div id="weekHistoryBox"><p class="status-line info">No history yet.</p></div>
+
+      <h3 style="font-size:12.5px;margin:16px 0 6px 0;">3-Month History (weekly totals)</h3>
+      <div id="monthHistoryBox"><p class="status-line info">No history yet.</p></div>
+
+      <h3 style="font-size:12.5px;margin:16px 0 6px 0;">Lifetime History</h3>
+      <div id="lifetimeHistoryBox"><p class="status-line info">No history yet.</p></div>
+
       <div class="btn-row">
         <button class="btn btn-gray" id="clearTodayBtn">Clear Today</button>
         <button class="btn btn-gray" id="clear7dBtn">Clear 7 Days</button>
@@ -469,6 +501,43 @@ document.getElementById('publishBtn').addEventListener('click', async () => {
   }
 });
 
+/* ================= TELEGRAM URL ================= */
+let ghTelegramSha = null;
+
+document.getElementById('loadTelegramBtn').addEventListener('click', async () => {
+  const c = currentConnection();
+  if (!c.user || !c.repo || !c.token) { setStatus('telegramStatus', 'Fill in the GitHub connection fields above first.', 'err'); return; }
+  setStatus('telegramStatus', 'Loading telegram.json…', 'info');
+  try {
+    const file = await ghGetFile('telegram.json');
+    if (!file) { setStatus('telegramStatus', 'telegram.json was not found yet — Save will create it.', 'info'); ghTelegramSha = null; return; }
+    const parsed = JSON.parse(file.text);
+    ghTelegramSha = file.sha;
+    document.getElementById('telegramUrlInput').value = parsed.url || '';
+    setStatus('telegramStatus', 'Loaded current Telegram URL.', 'ok');
+  } catch (err) {
+    setStatus('telegramStatus', err.message, 'err');
+  }
+});
+
+document.getElementById('saveTelegramBtn').addEventListener('click', async () => {
+  const c = currentConnection();
+  const url = document.getElementById('telegramUrlInput').value.trim();
+  if (!url) { setStatus('telegramStatus', 'Enter a Telegram URL first.', 'err'); return; }
+  if (!c.user || !c.repo || !c.token) { setStatus('telegramStatus', 'Fill in the GitHub connection fields above first.', 'err'); return; }
+  setStatus('telegramStatus', 'Publishing telegram.json…', 'info');
+  try {
+    const fresh = await ghGetFile('telegram.json');
+    const newText = JSON.stringify({ url: url }, null, 2);
+    await ghPutFile('telegram.json', newText, fresh ? fresh.sha : null, 'Update Telegram URL via admin panel');
+    setStatus('telegramStatus', '✓ Telegram URL published. The live site will use it on next load.', 'ok');
+    const reload = await ghGetFile('telegram.json');
+    ghTelegramSha = reload ? reload.sha : null;
+  } catch (err) {
+    setStatus('telegramStatus', err.message + ' — telegram.json was NOT changed.', 'err');
+  }
+});
+
 document.getElementById('openSiteBtn').addEventListener('click', () => {
   const url = document.getElementById('siteUrl').value.trim();
   if (!url) { alert('Enter the website URL first.'); return; }
@@ -676,12 +745,68 @@ function renderAnalytics(){
   document.getElementById('statClicksLife').textContent = a.lifetime.downloads || 0;
   document.getElementById('statOpensLife').textContent = a.lifetime.opens || 0;
 
+  // ---- Top Games: Today / 7 Days / 3 Months / Lifetime, ranked by lifetime ----
+  function sumGameRange(perDate, days){
+    let total = 0;
+    for (let i = 0; i < days; i++) total += (perDate[daysAgoKey(i)] || 0);
+    return total;
+  }
   const rows = Object.values(a.gameClicks || {}).sort((x,y) => (y.total||0) - (x.total||0));
   const box = document.getElementById('gameClicksBox');
-  if (rows.length === 0) { box.innerHTML = '<p class="status-line info">No download clicks recorded yet.</p>'; return; }
-  box.innerHTML = rows.slice(0, 25).map(r => `
-    <div class="game-click-row"><span class="n">${r.name}</span><span class="c">${r.total} total</span></div>
-  `).join('');
+  if (rows.length === 0) { box.innerHTML = '<p class="status-line info">No download clicks recorded yet.</p>'; }
+  else {
+    const header = `<div class="top-game-row"><span>Game</span><span>Today</span><span>7d</span><span>3m</span><span>Lifetime</span></div>`;
+    const body = rows.slice(0, 25).map(r => {
+      const per = r.today || {}; // per-date map (name kept from original schema)
+      return `<div class="top-game-row">
+        <span>${r.name}</span>
+        <span>${per[todayKey()] || 0}</span>
+        <span>${sumGameRange(per, 7)}</span>
+        <span>${sumGameRange(per, 90)}</span>
+        <span>${r.total || 0}</span>
+      </div>`;
+    }).join('');
+    box.innerHTML = header + body;
+  }
+
+  // ---- Daily Clicks: last 14 days, date + count ----
+  const dailyBox = document.getElementById('dailyHistoryBox');
+  const dailyRows = [];
+  for (let i = 0; i < 14; i++) {
+    const k = daysAgoKey(i);
+    dailyRows.push(`<div class="game-click-row"><span class="n">${k}</span><span class="c">${a.daily[k] || 0} clicks</span></div>`);
+  }
+  dailyBox.innerHTML = dailyRows.join('');
+
+  // ---- 7-Day History: date + clicks (same 7 days, shown on its own for clarity) ----
+  const weekBox = document.getElementById('weekHistoryBox');
+  const weekRows = [];
+  for (let i = 0; i < 7; i++) {
+    const k = daysAgoKey(i);
+    weekRows.push(`<div class="game-click-row"><span class="n">${k}</span><span class="c">${a.daily[k] || 0} clicks</span></div>`);
+  }
+  weekBox.innerHTML = weekRows.join('');
+
+  // ---- 3-Month History: grouped into weekly totals (13 weeks) so the list stays readable ----
+  const monthBox = document.getElementById('monthHistoryBox');
+  const weekTotals = [];
+  for (let w = 0; w < 13; w++) {
+    let total = 0;
+    for (let d = w*7; d < w*7+7; d++) total += (a.daily[daysAgoKey(d)] || 0);
+    const endDate = daysAgoKey(w*7);
+    const startDate = daysAgoKey(w*7+6);
+    weekTotals.push(`<div class="game-click-row"><span class="n">${startDate} → ${endDate}</span><span class="c">${total} clicks</span></div>`);
+  }
+  monthBox.innerHTML = weekTotals.join('');
+
+  // ---- Lifetime History: every date on record, oldest → newest ----
+  const lifeBox = document.getElementById('lifetimeHistoryBox');
+  const allDates = Object.keys(a.daily || {}).sort();
+  if (allDates.length === 0) {
+    lifeBox.innerHTML = '<p class="status-line info">No history yet.</p>';
+  } else {
+    lifeBox.innerHTML = allDates.map(k => `<div class="game-click-row"><span class="n">${k}</span><span class="c">${a.daily[k]} clicks</span></div>`).join('');
+  }
 }
 document.getElementById('clearTodayBtn').addEventListener('click', () => {
   showConfirm("Clear today's analytics?", 'This only clears analytics history — apps and settings are not affected.', () => {
@@ -749,7 +874,7 @@ function init(){
   renderAppList();
   renderRemovedList();
   renderAnalytics();
-  setInterval(renderAnalytics, 5000); // keep numbers fresh without a full reload
+  setInterval(renderAnalytics, 1000); // keep numbers fresh without a full reload
 }
 
 })();
